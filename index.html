@@ -258,14 +258,17 @@
         text-align: center;
       }
 
-      .hero-buttons {
-        flex-direction: column;
-        align-items: stretch;
-      }
-      .hero-buttons .btn {
-        width: 100%; /* tous les boutons prennent la largeur dispo */
-        margin-left: 0 !important; /* override GitHub */
-      }
+  .hero-buttons {
+    flex-direction: column;     /* les boutons passent en colonne */
+    align-items: center;        /* centrés horizontalement */
+    gap: 0.8rem;                /* petit espace entre eux */
+    width: 100%;
+  }
+
+  .hero-buttons .btn {
+    width: 90%;                 /* occupe la largeur de l’écran */
+    margin-left: 0 !important;  /* supprime le "auto" du GitHub */
+  }
       .github-btn {
         margin-left: 0;
         /* sinon ça décale en mobile */
