@@ -260,9 +260,12 @@
 
       .hero-buttons {
         flex-direction: column;
-        margin-top: 1rem;
+        align-items: stretch;
       }
-
+      .hero-buttons .btn {
+        width: 100%; /* tous les boutons prennent la largeur dispo */
+        margin-left: 0 !important; /* override GitHub */
+      }
       .github-btn {
         margin-left: 0;
         /* sinon ça décale en mobile */
