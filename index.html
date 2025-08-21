@@ -48,7 +48,7 @@
       flex: 1;
       min-width: 300px;
       padding-right: 2rem;
-      text-align: left; /* 👉 Texte aligné à gauche */
+      text-align: left;
     }
     .hero-text h2 {
       font-size: 2.2rem;
@@ -63,23 +63,27 @@
       line-height: 1.8;
       margin-bottom: 2rem;
       color: #c9d1d9;
-      white-space: pre-line; /* 👉 Permet les retours à la ligne dans le texte injecté */
+      white-space: pre-line;
     }
+
     .hero-buttons {
       display: flex;
+      align-items: center;
+      width: 100%;
       gap: 1rem;
     }
     .btn {
-      display: flex; /* 👉 flex pour centrer verticalement */
+      display: flex;
       justify-content: center;
       align-items: center;
       padding: 1rem 2rem;
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       border-radius: 8px;
       text-decoration: none;
       transition: 0.3s;
       text-align: center;
-      height: 50px; /* hauteur fixe pour uniformité */
+      height: 50px;
+      white-space: nowrap;
     }
     .download-btn {
       background-color: #238636;
@@ -93,11 +97,13 @@
       background-color: #161b22;
       color: #58a6ff;
       border: 1px solid #58a6ff;
+      margin-left: auto; /* 👉 pousse GitHub complètement à droite */
     }
     .github-btn:hover {
       background-color: #21262d;
       transform: scale(1.05);
     }
+
     .hero-logo {
       flex: 1;
       display: flex;
@@ -211,14 +217,14 @@
     </div>
   </header>
 
-  <!-- SECTION HERO -->
+  <!-- HERO -->
   <section class="hero">
     <div class="hero-text">
       <h2 id="title">L'apprentissage des langues est plus simple avec <span>ALDB</span></h2>
-      <p id="desc">
-      </p>
+      <p id="desc"></p>
       <div class="hero-buttons">
-        <a class="btn download-btn" href="Lien-vers-ton-fichier.exe" id="download">⬇ Télécharger la version Windows (.exe)</a>
+        <a class="btn download-btn" href="https://github.com/SmartDevSource/Anki-Lang-Deck-Builder/raw/refs/heads/master/win-release/ALDB.exe" id="download-exe">⬇ Télécharger (.exe)</a>
+        <a class="btn download-btn" href="https://github.com/SmartDevSource/Anki-Lang-Deck-Builder/raw/refs/heads/master/win-release/ALDB.zip" id="download-zip">⬇ Télécharger (.zip)</a>
         <a class="btn github-btn" href="https://github.com/SmartDevSource/Anki-Lang-Deck-Builder" target="_blank">GitHub</a>
       </div>
     </div>
@@ -243,17 +249,17 @@
     </div>
   </section>
 
-  <!-- Screenshot de l'application -->
+  <!-- Screenshot -->
   <div class="screenshot">
     <img src="screen_1.png" alt="Capture d'écran de Anki Lang Deck Builder">
   </div>
 
-  <!-- Vidéo YouTube -->
+  <!-- Vidéo -->
   <div class="video">
-    <iframe src="https://www.youtube.com/embed/9bZkp7q19f0" title="Présentation ALDB"></iframe>
+    <iframe src="https://www.youtube.com/embed/YmU07BXxfhM" title="Présentation ALDB"></iframe>
   </div>
 
-  <!-- Langues supportées -->
+  <!-- Langues -->
   <h2 id="languages">Langues supportées</h2>
   <table id="lang-table"></table>
 
@@ -261,12 +267,14 @@
   <footer>
     © 2025 - Projet open source disponible sur <a href="https://github.com/SmartDevSource/Anki-Lang-Deck-Builder" target="_blank">GitHub</a>.
   </footer>
+
 <script>
   const langData = {
     fr: {
       title: "L'apprentissage des langues est plus simple avec <span>ALDB</span>",
       desc: `Anki Lang Deck Builder est une application 100% gratuite qui utilise les voix neuronales réalistes de Edge TTS.\nElle génère automatiquement vos decks .apkg, directement importables dans Anki, avec enregistrements vocaux.\nUn énorme gain de temps, conçu pour l’apprentissage des langues.`,
-      download: "⬇ Télécharger la version Windows (.exe)",
+      downloadExe: "⬇ Télécharger (.exe)",
+      downloadZip: "⬇ Télécharger (.zip)",
       languages: "Langues supportées",
       voices: "Voix",
       features: [
@@ -294,7 +302,8 @@
     en: {
       title: "Remembering languages is easier with <span>ALDB</span>",
       desc: `Anki Lang Deck Builder is a 100% free app that uses realistic neural voices from Edge TTS.\nIt automatically generates .apkg decks, ready to import into Anki, with audio recordings.\nA huge time saver, designed for language learning.`,
-      download: "⬇ Download Windows version (.exe)",
+      downloadExe: "⬇ Download (.exe)",
+      downloadZip: "⬇ Download (.zip)",
       languages: "Supported languages",
       voices: "Voices",
       features: [
@@ -352,15 +361,16 @@
 
   function setLang(lang) {
     document.getElementById("title").innerHTML = langData[lang].title;
-    document.getElementById("desc").innerText = langData[lang].desc; // conserve les retours à la ligne
-    document.getElementById("download").innerHTML = langData[lang].download;
+    document.getElementById("desc").innerText = langData[lang].desc;
+    document.getElementById("download-exe").innerHTML = langData[lang].downloadExe;
+    document.getElementById("download-zip").innerHTML = langData[lang].downloadZip;
     document.getElementById("languages").innerHTML = langData[lang].languages;
-    renderTable(lang);   // ✅ tableau rétabli
+    renderTable(lang);
     renderFeatures(lang);
   }
 
-  // init par défaut en français
-  setLang("fr");
+  // init
+  setLang("en");
 </script>
 
 </body>
