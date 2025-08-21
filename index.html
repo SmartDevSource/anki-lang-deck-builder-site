@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Anki Lang Deck Builder</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: system-ui, sans-serif;
+      background-color: #0d1117;
+      color: #e6edf3;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem 3rem;
+      background-color: #161b22;
+    }
+    header h1 {
+      font-size: 1.5rem;
+      margin: 0;
+      color: #58a6ff;
+    }
+    .lang-switch {
+      display: flex;
+      gap: 1rem;
+    }
+    .lang-switch button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1.5rem;
+    }
+
+    /* SECTION HERO */
+    .hero {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1100px;
+      margin: 4rem auto 2rem auto;
+      padding: 2rem;
+      flex-wrap: wrap;
+    }
+    .hero-text {
+      flex: 1;
+      min-width: 300px;
+      padding-right: 2rem;
+      text-align: left; /* 👉 Texte aligné à gauche */
+    }
+    .hero-text h2 {
+      font-size: 2.2rem;
+      color: #e6edf3;
+      margin-bottom: 1rem;
+    }
+    .hero-text h2 span {
+      color: #58a6ff;
+    }
+    .hero-text p {
+      font-size: 1.1rem;
+      line-height: 1.8;
+      margin-bottom: 2rem;
+      color: #c9d1d9;
+      white-space: pre-line; /* 👉 Permet les retours à la ligne dans le texte injecté */
+    }
+    .hero-buttons {
+      display: flex;
+      gap: 1rem;
+    }
+    .btn {
+      display: flex; /* 👉 flex pour centrer verticalement */
+      justify-content: center;
+      align-items: center;
+      padding: 1rem 2rem;
+      font-size: 1.2rem;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: 0.3s;
+      text-align: center;
+      height: 50px; /* hauteur fixe pour uniformité */
+    }
+    .download-btn {
+      background-color: #238636;
+      color: white;
+    }
+    .download-btn:hover {
+      background-color: #2ea043;
+      transform: scale(1.05);
+    }
+    .github-btn {
+      background-color: #161b22;
+      color: #58a6ff;
+      border: 1px solid #58a6ff;
+    }
+    .github-btn:hover {
+      background-color: #21262d;
+      transform: scale(1.05);
+    }
+    .hero-logo {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      min-width: 280px;
+    }
+    .hero-logo img {
+      max-width: 300px;
+      height: auto;
+    }
+
+    /* Features */
+    .features {
+      max-width: 1100px;
+      margin: 2rem auto 4rem auto;
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      text-align: center;
+    }
+    .feature {
+      flex: 1;
+      min-width: 250px;
+      background-color: #161b22;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.6);
+    }
+    .feature h3 {
+      color: #58a6ff;
+      margin-bottom: 1rem;
+    }
+    .feature p {
+      color: #c9d1d9;
+    }
+
+    /* Screenshot */
+    .screenshot {
+      max-width: 900px;
+      margin: 3rem auto;
+      background-color: #161b22;
+      padding: 1rem;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.6);
+      text-align: center;
+    }
+    .screenshot img {
+      max-width: 100%;
+      border-radius: 6px;
+    }
+
+    /* Video */
+    .video {
+      max-width: 900px;
+      margin: 3rem auto;
+      text-align: center;
+    }
+    .video iframe {
+      width: 100%;
+      height: 500px;
+      border-radius: 10px;
+      border: none;
+    }
+
+    /* Tableau des langues */
+    h2 {
+      color: #58a6ff;
+      font-size: 2rem;
+      text-align: center;
+      margin-top: 3rem;
+    }
+    table {
+      width: 90%;
+      margin: 2rem auto;
+      border-collapse: collapse;
+      background-color: #161b22;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    th, td {
+      border: 1px solid #30363d;
+      padding: 0.8rem;
+      text-align: center;
+    }
+    th {
+      background-color: #21262d;
+      color: #58a6ff;
+    }
+
+    /* Footer */
+    footer {
+      margin-top: 3rem;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #8b949e;
+      padding: 2rem;
+    }
+    footer a {
+      color: #58a6ff;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Anki Lang Deck Builder</h1>
+    <div class="lang-switch">
+      <button onclick="setLang('fr')">🇫🇷</button>
+      <button onclick="setLang('en')">🇬🇧</button>
+    </div>
+  </header>
+
+  <!-- SECTION HERO -->
+  <section class="hero">
+    <div class="hero-text">
+      <h2 id="title">L'apprentissage des langues est plus simple avec <span>ALDB</span></h2>
+      <p id="desc">
+      </p>
+      <div class="hero-buttons">
+        <a class="btn download-btn" href="Lien-vers-ton-fichier.exe" id="download">⬇ Télécharger la version Windows (.exe)</a>
+        <a class="btn github-btn" href="https://github.com/SmartDevSource/Anki-Lang-Deck-Builder" target="_blank">GitHub</a>
+      </div>
+    </div>
+    <div class="hero-logo">
+      <img src="ALDB_LOGO.svg" alt="Logo ALDB">
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="features" id="features">
+    <div class="feature">
+      <h3 id="f1-title">⚡ Rapide</h3>
+      <p id="f1-desc">Créez vos decks Anki en quelques clics seulement avec génération automatique.</p>
+    </div>
+    <div class="feature">
+      <h3 id="f2-title">🎙️ Voix réalistes</h3>
+      <p id="f2-desc">Profitez des voix neuronales Edge TTS pour un apprentissage immersif.</p>
+    </div>
+    <div class="feature">
+      <h3 id="f3-title">🌍 Multilingue</h3>
+      <p id="f3-desc">Supporte de nombreuses langues et accents pour un apprentissage global.</p>
+    </div>
+  </section>
+
+  <!-- Screenshot de l'application -->
+  <div class="screenshot">
+    <img src="screen_1.png" alt="Capture d'écran de Anki Lang Deck Builder">
+  </div>
+
+  <!-- Vidéo YouTube -->
+  <div class="video">
+    <iframe src="https://www.youtube.com/embed/9bZkp7q19f0" title="Présentation ALDB"></iframe>
+  </div>
+
+  <!-- Langues supportées -->
+  <h2 id="languages">Langues supportées</h2>
+  <table id="lang-table"></table>
+
+  <!-- Footer -->
+  <footer>
+    © 2025 - Projet open source disponible sur <a href="https://github.com/SmartDevSource/Anki-Lang-Deck-Builder" target="_blank">GitHub</a>.
+  </footer>
+<script>
+  const langData = {
+    fr: {
+      title: "L'apprentissage des langues est plus simple avec <span>ALDB</span>",
+      desc: `Anki Lang Deck Builder est une application 100% gratuite qui utilise les voix neuronales réalistes de Edge TTS.\nElle génère automatiquement vos decks .apkg, directement importables dans Anki, avec enregistrements vocaux.\nUn énorme gain de temps, conçu pour l’apprentissage des langues.`,
+      download: "⬇ Télécharger la version Windows (.exe)",
+      languages: "Langues supportées",
+      voices: "Voix",
+      features: [
+        { title: "⚡ Rapide", desc: "Créez vos decks Anki en quelques clics seulement avec génération automatique." },
+        { title: "🎙️ Voix réalistes", desc: "Profitez des voix neuronales Edge TTS pour un apprentissage immersif." },
+        { title: "🌍 Multilingue", desc: "Supporte de nombreuses langues et accents pour un apprentissage global." }
+      ],
+      table: [
+        ["🇮🇹 Italien", "Diego (M), Elsa (F)"],
+        ["🇷🇺 Russe", "Dmitry (M), Svetlana (F)"],
+        ["🇫🇷 Français", "Fabrice (M), Ariane (F)"],
+        ["🇬🇧 Anglais", "Ryan (M), Sonia (F)"],
+        ["🇵🇹 Portugais", "Duarte (M), Raquel (F)"],
+        ["🇪🇸 Espagnol", "Alvaro (M), Elvira (F)"],
+        ["🇩🇪 Allemand", "Conrad (M), Katja (F)"],
+        ["🇵🇱 Polonais", "Marek (M), Zofia (F)"],
+        ["🇸🇦 Arabe", "Hamed (M), Zariyah (F)"],
+        ["🇯🇵 Japonais", "Keita (M), Nanami (F)"],
+        ["🇨🇳 Mandarin", "Yunze (M), Xiaoxiao (F)"],
+        ["🇰🇷 Coréen", "InJoon (M), SunHi (F)"],
+        ["🇹🇷 Turc", "Ahmet (M)"],
+        ["🇳🇱 Néerlandais", "Coen (M), Fenna (F)"]
+      ]
+    },
+    en: {
+      title: "Remembering languages is easier with <span>ALDB</span>",
+      desc: `Anki Lang Deck Builder is a 100% free app that uses realistic neural voices from Edge TTS.\nIt automatically generates .apkg decks, ready to import into Anki, with audio recordings.\nA huge time saver, designed for language learning.`,
+      download: "⬇ Download Windows version (.exe)",
+      languages: "Supported languages",
+      voices: "Voices",
+      features: [
+        { title: "⚡ Fast", desc: "Create your Anki decks in just a few clicks with automatic generation." },
+        { title: "🎙️ Realistic voices", desc: "Enjoy Edge TTS neural voices for immersive learning." },
+        { title: "🌍 Multilingual", desc: "Supports many languages and accents for global learning." }
+      ],
+      table: [
+        ["🇮🇹 Italian", "Diego (M), Elsa (F)"],
+        ["🇷🇺 Russian", "Dmitry (M), Svetlana (F)"],
+        ["🇫🇷 French", "Fabrice (M), Ariane (F)"],
+        ["🇬🇧 English", "Ryan (M), Sonia (F)"],
+        ["🇵🇹 Portuguese", "Duarte (M), Raquel (F)"],
+        ["🇪🇸 Spanish", "Alvaro (M), Elvira (F)"],
+        ["🇩🇪 German", "Conrad (M), Katja (F)"],
+        ["🇵🇱 Polish", "Marek (M), Zofia (F)"],
+        ["🇸🇦 Arabic", "Hamed (M), Zariyah (F)"],
+        ["🇯🇵 Japanese", "Keita (M), Nanami (F)"],
+        ["🇨🇳 Mandarin", "Yunze (M), Xiaoxiao (F)"],
+        ["🇰🇷 Korean", "InJoon (M), SunHi (F)"],
+        ["🇹🇷 Turkish", "Ahmet (M)"],
+        ["🇳🇱 Dutch", "Coen (M), Fenna (F)"]
+      ]
+    }
+  };
+
+  function renderTable(lang) {
+    const table = document.getElementById("lang-table");
+    const data = langData[lang].table;
+    let html = `
+      <thead>
+        <tr>
+          <th>${langData[lang].languages}</th>
+          <th>${langData[lang].voices}</th>
+        </tr>
+      </thead>
+      <tbody>
+    `;
+    data.forEach(row => {
+      html += `<tr><td>${row[0]}</td><td>${row[1]}</td></tr>`;
+    });
+    html += "</tbody>";
+    table.innerHTML = html;
+  }
+
+  function renderFeatures(lang) {
+    const feats = langData[lang].features;
+    document.getElementById("f1-title").innerText = feats[0].title;
+    document.getElementById("f1-desc").innerText = feats[0].desc;
+    document.getElementById("f2-title").innerText = feats[1].title;
+    document.getElementById("f2-desc").innerText = feats[1].desc;
+    document.getElementById("f3-title").innerText = feats[2].title;
+    document.getElementById("f3-desc").innerText = feats[2].desc;
+  }
+
+  function setLang(lang) {
+    document.getElementById("title").innerHTML = langData[lang].title;
+    document.getElementById("desc").innerText = langData[lang].desc; // conserve les retours à la ligne
+    document.getElementById("download").innerHTML = langData[lang].download;
+    document.getElementById("languages").innerHTML = langData[lang].languages;
+    renderTable(lang);   // ✅ tableau rétabli
+    renderFeatures(lang);
+  }
+
+  // init par défaut en français
+  setLang("fr");
+</script>
+
+</body>
+</html>
