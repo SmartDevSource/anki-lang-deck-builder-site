@@ -219,6 +219,61 @@
       color: #58a6ff;
     }
 
+    /* Styles pour les boutons audio */
+    .audio-controls {
+      display: flex;
+      gap: 0.5rem;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .audio-btn {
+      background-color: #238636;
+      color: white;
+      border: none;
+      padding: 0.4rem 0.8rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .audio-btn:hover {
+      background-color: #2ea043;
+      transform: scale(1.05);
+    }
+
+    .audio-btn.playing {
+      background-color: #fd7e14;
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0% { opacity: 1; }
+      50% { opacity: 0.7; }
+      100% { opacity: 1; }
+    }
+
+    .audio-btn.male {
+      background-color: #0969da;
+    }
+
+    .audio-btn.male:hover {
+      background-color: #0860ca;
+    }
+
+    .audio-btn.female {
+      background-color: #d1127d;
+    }
+
+    .audio-btn.female:hover {
+      background-color: #bf0e6e;
+    }
+
     /* Footer */
     footer {
       margin-top: 3rem;
@@ -258,17 +313,18 @@
         text-align: center;
       }
 
-  .hero-buttons {
-    flex-direction: column;     /* les boutons passent en colonne */
-    align-items: center;        /* centrés horizontalement */
-    gap: 0.8rem;                /* petit espace entre eux */
-    width: 100%;
-  }
+      .hero-buttons {
+        flex-direction: column;     /* les boutons passent en colonne */
+        align-items: center;        /* centrés horizontalement */
+        gap: 0.8rem;                /* petit espace entre eux */
+        width: 100%;
+      }
 
-  .hero-buttons .btn {
-    width: 90%;                 /* occupe la largeur de l’écran */
-    margin-left: 0 !important;  /* supprime le "auto" du GitHub */
-  }
+      .hero-buttons .btn {
+        width: 90%;                 /* occupe la largeur de l'écran */
+        margin-left: 0 !important;  /* supprime le "auto" du GitHub */
+      }
+      
       .github-btn {
         margin-left: 0;
         /* sinon ça décale en mobile */
@@ -294,6 +350,16 @@
         overflow-x: auto;
         white-space: nowrap;
       }
+
+      .audio-controls {
+        flex-direction: column;
+        gap: 0.3rem;
+      }
+
+      .audio-btn {
+        font-size: 0.75rem;
+        padding: 0.3rem 0.6rem;
+      }
     }
 
     /* 📱 Responsive - Petits écrans (≤ 480px) */
@@ -318,6 +384,11 @@
 
       .feature {
         padding: 1rem;
+      }
+
+      .audio-btn {
+        font-size: 0.7rem;
+        padding: 0.25rem 0.5rem;
       }
     }
   </style>
@@ -394,34 +465,76 @@
   </footer>
 
   <script>
+    // Audio management
+    let currentAudio = null;
+    let currentButton = null;
+
+    function playAudio(audioFile, button) {
+      // Stop any currently playing audio
+      if (currentAudio) {
+        currentAudio.pause();
+        currentAudio.currentTime = 0;
+        if (currentButton) {
+          currentButton.classList.remove('playing');
+        }
+      }
+
+      // If clicking the same button, just stop
+      if (currentButton === button) {
+        currentAudio = null;
+        currentButton = null;
+        return;
+      }
+
+      // Play new audio
+      currentAudio = new Audio(`audios/${audioFile}`);
+      currentButton = button;
+      
+      button.classList.add('playing');
+      
+      currentAudio.play().catch(error => {
+        console.error('Erreur lors de la lecture audio:', error);
+        button.classList.remove('playing');
+      });
+
+      currentAudio.addEventListener('ended', () => {
+        button.classList.remove('playing');
+        currentAudio = null;
+        currentButton = null;
+      });
+    }
+
     const langData = {
       fr: {
         title: "L'apprentissage des langues est plus simple avec <span>ALDB</span>",
-        desc: `Anki Lang Deck Builder est une application 100% gratuite qui utilise les voix neuronales réalistes de Edge TTS.\nElle génère automatiquement vos decks .apkg, directement importables dans Anki, avec enregistrements vocaux.\nUn énorme gain de temps, conçu pour l’apprentissage des langues.`,
+        desc: `Anki Lang Deck Builder est une application 100% gratuite qui utilise les voix neuronales réalistes de Edge TTS.\nElle génère automatiquement vos decks .apkg, directement importables dans Anki, avec enregistrements vocaux.\nUn énorme gain de temps, conçu pour l'apprentissage des langues.`,
         downloadExe: "⬇ Télécharger (win .exe)",
         downloadZip: "⬇ Télécharger (win .zip)",
         languages: "Langues supportées",
         voices: "Voix",
+        listen: "Écouter",
+        male: "H",
+        female: "F",
         features: [
           { title: "⚡ Rapide", desc: "Créez vos decks Anki en quelques clics seulement avec génération automatique." },
           { title: "🎙️ Voix réalistes", desc: "Profitez des voix neuronales Edge TTS pour un apprentissage immersif." },
           { title: "🌍 Multilingue", desc: "Supporte de nombreuses langues et accents pour un apprentissage global." }
         ],
         table: [
-          ["🇮🇹 Italien", "Diego (M), Elsa (F)"],
-          ["🇷🇺 Russe", "Dmitry (M), Svetlana (F)"],
-          ["🇫🇷 Français", "Fabrice (M), Ariane (F)"],
-          ["🇬🇧 Anglais", "Ryan (M), Sonia (F)"],
-          ["🇵🇹 Portugais", "Duarte (M), Raquel (F)"],
-          ["🇪🇸 Espagnol", "Alvaro (M), Elvira (F)"],
-          ["🇩🇪 Allemand", "Conrad (M), Katja (F)"],
-          ["🇵🇱 Polonais", "Marek (M), Zofia (F)"],
-          ["🇸🇦 Arabe", "Hamed (M), Zariyah (F)"],
-          ["🇯🇵 Japonais", "Keita (M), Nanami (F)"],
-          ["🇨🇳 Mandarin", "Yunze (M), Xiaoxiao (F)"],
-          ["🇰🇷 Coréen", "InJoon (M), SunHi (F)"],
-          ["🇹🇷 Turc", "Ahmet (M)"],
-          ["🇳🇱 Néerlandais", "Coen (M), Fenna (F)"]
+          { lang: "🇮🇹 Italien", voices: "Diego (M), Elsa (F)", audio: "it_Italian" },
+          { lang: "🇷🇺 Russe", voices: "Dmitry (M), Svetlana (F)", audio: "ru_Russian" },
+          { lang: "🇫🇷 Français", voices: "Fabrice (M), Ariane (F)", audio: "fr_French" },
+          { lang: "🇬🇧 Anglais", voices: "Ryan (M), Sonia (F)", audio: "en_English" },
+          { lang: "🇵🇹 Portugais", voices: "Duarte (M), Raquel (F)", audio: "pt_Portuguese" },
+          { lang: "🇪🇸 Espagnol", voices: "Alvaro (M), Elvira (F)", audio: "es_Spanish" },
+          { lang: "🇩🇪 Allemand", voices: "Conrad (M), Katja (F)", audio: "de_German" },
+          { lang: "🇵🇱 Polonais", voices: "Marek (M), Zofia (F)", audio: "pl_Polish" },
+          { lang: "🇸🇦 Arabe", voices: "Hamed (M), Zariyah (F)", audio: "ar_Arabic" },
+          { lang: "🇯🇵 Japonais", voices: "Keita (M), Nanami (F)", audio: "ja_Japanese" },
+          { lang: "🇨🇳 Mandarin", voices: "Yunze (M), Xiaoxiao (F)", audio: "zh_Chinese_Mandarin" },
+          { lang: "🇰🇷 Coréen", voices: "InJoon (M), SunHi (F)", audio: "ko_Korean" },
+          { lang: "🇹🇷 Turc", voices: "Ahmet (M)", audio: "tr_Turkish", maleOnly: true },
+          { lang: "🇳🇱 Néerlandais", voices: "Coen (M), Fenna (F)", audio: "nl_Dutch" }
         ]
       },
       en: {
@@ -431,26 +544,29 @@
         downloadZip: "⬇ Download (win .zip)",
         languages: "Supported languages",
         voices: "Voices",
+        listen: "Listen",
+        male: "M",
+        female: "F",
         features: [
           { title: "⚡ Fast", desc: "Create your Anki decks in just a few clicks with automatic generation." },
           { title: "🎙️ Realistic voices", desc: "Enjoy Edge TTS neural voices for immersive learning." },
           { title: "🌍 Multilingual", desc: "Supports many languages and accents for global learning." }
         ],
         table: [
-          ["🇮🇹 Italian", "Diego (M), Elsa (F)"],
-          ["🇷🇺 Russian", "Dmitry (M), Svetlana (F)"],
-          ["🇫🇷 French", "Fabrice (M), Ariane (F)"],
-          ["🇬🇧 English", "Ryan (M), Sonia (F)"],
-          ["🇵🇹 Portuguese", "Duarte (M), Raquel (F)"],
-          ["🇪🇸 Spanish", "Alvaro (M), Elvira (F)"],
-          ["🇩🇪 German", "Conrad (M), Katja (F)"],
-          ["🇵🇱 Polish", "Marek (M), Zofia (F)"],
-          ["🇸🇦 Arabic", "Hamed (M), Zariyah (F)"],
-          ["🇯🇵 Japanese", "Keita (M), Nanami (F)"],
-          ["🇨🇳 Mandarin", "Yunze (M), Xiaoxiao (F)"],
-          ["🇰🇷 Korean", "InJoon (M), SunHi (F)"],
-          ["🇹🇷 Turkish", "Ahmet (M)"],
-          ["🇳🇱 Dutch", "Coen (M), Fenna (F)"]
+          { lang: "🇮🇹 Italian", voices: "Diego (M), Elsa (F)", audio: "it_Italian" },
+          { lang: "🇷🇺 Russian", voices: "Dmitry (M), Svetlana (F)", audio: "ru_Russian" },
+          { lang: "🇫🇷 French", voices: "Fabrice (M), Ariane (F)", audio: "fr_French" },
+          { lang: "🇬🇧 English", voices: "Ryan (M), Sonia (F)", audio: "en_English" },
+          { lang: "🇵🇹 Portuguese", voices: "Duarte (M), Raquel (F)", audio: "pt_Portuguese" },
+          { lang: "🇪🇸 Spanish", voices: "Alvaro (M), Elvira (F)", audio: "es_Spanish" },
+          { lang: "🇩🇪 German", voices: "Conrad (M), Katja (F)", audio: "de_German" },
+          { lang: "🇵🇱 Polish", voices: "Marek (M), Zofia (F)", audio: "pl_Polish" },
+          { lang: "🇸🇦 Arabic", voices: "Hamed (M), Zariyah (F)", audio: "ar_Arabic" },
+          { lang: "🇯🇵 Japanese", voices: "Keita (M), Nanami (F)", audio: "ja_Japanese" },
+          { lang: "🇨🇳 Mandarin", voices: "Yunze (M), Xiaoxiao (F)", audio: "zh_Chinese_Mandarin" },
+          { lang: "🇰🇷 Korean", voices: "InJoon (M), SunHi (F)", audio: "ko_Korean" },
+          { lang: "🇹🇷 Turkish", voices: "Ahmet (M)", audio: "tr_Turkish", maleOnly: true },
+          { lang: "🇳🇱 Dutch", voices: "Coen (M), Fenna (F)", audio: "nl_Dutch" }
         ]
       }
     };
@@ -463,12 +579,24 @@
         <tr>
           <th>${langData[lang].languages}</th>
           <th>${langData[lang].voices}</th>
+          <th>${langData[lang].listen}</th>
         </tr>
       </thead>
       <tbody>
     `;
       data.forEach(row => {
-        html += `<tr><td>${row[0]}</td><td>${row[1]}</td></tr>`;
+        const audioControls = row.maleOnly ? 
+          `<button class="audio-btn male" onclick="playAudio('${row.audio}_(Male_Only).mp3', this)">🔊 ${langData[lang].male}</button>` :
+          `<button class="audio-btn male" onclick="playAudio('${row.audio}_(Male).mp3', this)">🔊 ${langData[lang].male}</button>
+           <button class="audio-btn female" onclick="playAudio('${row.audio}_(Female).mp3', this)">🔊 ${langData[lang].female}</button>`;
+        
+        html += `
+          <tr>
+            <td>${row.lang}</td>
+            <td>${row.voices}</td>
+            <td><div class="audio-controls">${audioControls}</div></td>
+          </tr>
+        `;
       });
       html += "</tbody>";
       table.innerHTML = html;
